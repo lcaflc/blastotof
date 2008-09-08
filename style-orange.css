@@ -1,0 +1,53 @@
+body {
+	font-family : Verdana, Arial, sans-serif ;
+	font-size : 12pt;
+	color: #FFFFFF;
+	background-color: #fffae8;
+}
+table {
+	border: 0px;
+}
+
+
+.menu-a {
+	text-decoration: none;
+	color:#000000;
+}
+.menu-a:hover {
+	color: #ffffff;
+}
+.menu-td {
+        background-color: #ffa854;
+	font-size: 12px;
+	border: 1px dashed #000000;
+} 
+
+
+.title-text {
+	color: #000000;
+	font-family: serif ;
+	font-size: 18pt;
+}
+.title-td {
+        background-color: #ffa854;
+	font-size: 12px;
+	border: 2px solid #000000;
+	padding: 10;
+} 
+
+
+.toflist-td {
+	vertical-align: top;
+        background-color: #ffeacb;
+	font-size: 12px;
+	border: 1px solid #000000;
+	padding: 2;
+	margin: 0;
+} 
+.toflist-text {
+	color: #000000;
+	font-family: serif ;
+	font-size: 12pt;
+	text-align: left;
+}
+

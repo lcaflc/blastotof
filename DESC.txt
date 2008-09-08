@@ -1,0 +1,1 @@
+DSCF0126.jpg	describe here the photo. the separator between filename and text is a tabulation
