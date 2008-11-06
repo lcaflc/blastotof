@@ -5,63 +5,96 @@ body {
 	background-color: #e6e6e6;
 }
 
-#global { 
-          position: absolute;
-          width: 768px;
-          height: 500px;
+a {
+	text-decoration: none;
+	color:#FFFFFF;
 }
+a:hover {
+	color: #000000;
+}
+
+#global { 
+          position: relative;
+          width: 95%;
+          height: 95%;
+}
+
+#title,
+#menu-dir,
+#menu-photo,
+#footer { 
+         background-color: #486591;
+         border: 2px solid #000000;
+          margin: 5px;
+ }
 
 #title {
          width: 80%;
-         background-color: #486591;
-         border: 2px solid #000000;
-         padding: 10;
+         right: 0;
+         padding: 10px;
+         margin: 10px;
          color: #FFFFFF;
-         font-family: serif ;
          font-size: 1.8em;
-         } 
+} 
+
+
+#menu { 
+        width: 19%;
+        height: 80%;
+        float: left;
+        overflow: auto;
+            }
+
+#menu-dir { 
+            text-align: right;
+}
+#menu-photo {
+              text-align: center;
+              vertical-align: top;
+} 
+#menu-photo-li { 
+               list-style-type: none;
+               }
+
+.menu-li { 
+               list-style-type: none;
+               }
+
 
 #path { 
         width: 400px;
         border: 1px dashed #000000;
-}
-
-
-.menu-a {
-	text-decoration: none;
-	color:#FFFFFF;
-}
-.menu-a:hover {
-	color: #000000;
+        float: right;
 }
 
 
 
-#footer { 
-          width: 100%;
-          background-color: #486591;
-          border: 2px solid #000000;
-          padding: 10;
-          
-          }
+#photo-big,
+#photo-list { 
+              width: 80%;
+              float: right;
+              border: 1px dashed #000000;
+              }
 
-#menu-dir { 
-            width: 220px;
-            text-align: right;
-            background-color: #486591;
-            font-size: 1em;
-            border: 1px dashed #000000;
-            }
+#photo-big { 
 
-#menu-photo {
-              width: 220px;
-              vertical-align: top;
-              background-color: #486591;
-              border: none;
-              padding: 3;
-              margin: 0;
-} 
-.toflist-text {
+         }
+
+#photo-list-ul { 
+                 position: relative;
+                 margin: 10px;
+                 list-style-type: none;
+}
+#photo-list-ul li { 
+                    width: 210px;
+                    height: 210px;
+                    float: left;
+                    margin: 2px;
+                    padding: 2px;
+                    border: 1px solid black;
+                    text-align: center;
+ }
+.photo-text {
 	color: #000000;
 	font-family: serif ;
 	font-size: 1em;
@@ -69,10 +102,9 @@ body {
 }
 
 
-#photo { 
-         width: 640px;
-}
-
-#photo-list { 
-         width: 640px;
-}
+#footer { 
+          width: 100%;
+          padding: 10px;
+          margin: 10px;
+          clear: both;
+          }

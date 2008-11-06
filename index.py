@@ -69,7 +69,8 @@ def choose_style_file():
 def print_headers():
     print "<html>\n<head>\n<title>%s</title>"%(title)
     choose_style_file()
-    print """</head><body>
+    print """<script type='text/javascript' src='script.js'></script>
+    </head><body>
     <div id='global'>
     """
     
@@ -92,24 +93,23 @@ def show_dir_menu():
     # print the menu
     print """
     <div id='menu-dir'>
-    <span><a class='menu-a' href='?'>top</a></span>
-    <span><a class='menu-a' href='?path=%s'>back</a></span>
+    <ul class='menu-li'>
+    <li><a href='?'>top</a></li>
+    <li><a href='?path=%s'>back</a></li>
     """%(urllib.quote(os.path.split(path)[0]))
     if len(dirlist):
-        print "<span></span>"
+        print "<li></li>"
     for i in dirlist:
-        print("<span><a class='menu-a' href='?path=%s'>%s</a></span>")%(urllib.quote(i),os.path.basename(i))
-    print "</div>"
+        print("<li><a href='?path=%s'>%s</a></li>")%(urllib.quote(i),os.path.basename(i))
+    print "</ul></div>"
 
 def show_photo_menu():
     # get and print the readme file
-    print "<div id='menu-photo'>"
-    # print the menu
-    print "<span></span>"
+    print "<div id='menu-photo'><ul id='menu-photo-li'>"
     count = 0
     for i in toflist:
         thumb = create_mini_thumb(i["path"])
-        print("<span><a href='?action=%s&path=%s&file=%s'><img border=0 src='%s' alt='%s'></a><span class='toflist-text'>%s</span></span>"%(A_SLIDE, path, urllib.quote(os.path.basename(i["path"])), thumb, thumb, ""))
+        print("<li><a href='?action=%s&path=%s&file=%s'><img border=0 src='%s' alt='%s'></a></li>"%(A_SLIDE, path, urllib.quote(os.path.basename(i["path"])), thumb, thumb))
         count += 1
         if count == 2:
             print ""
@@ -119,7 +119,7 @@ def show_photo_menu():
 def print_footer():
     print """
     <div id="footer">
-    Blastotof v%s, <a class='menu-a' href='http://glot.net'>caf@glot.net</a>
+    Blastotof v%s, <a href='http://glot.net'>caf@glot.net</a>
     </div>
     </div>
     </body></html>
@@ -184,14 +184,17 @@ def create_thumb(p):
 
 def show_photo(prev, cur, next):
     medium_thumb = create_med_thumb(cur["path"])
-    print "<div id='photo'>"
-    print("<a href='%s'><img border=0 src='%s' alt='%s'></a>%s\n" %(cur["path"],  medium_thumb, cur["desc"], cur["desc"]))
+    print "<div id='photo-big'>"
+    # FIXME add full size download link only if we want to
+    # <a href='%s'></a>%cur["path"]
+    print("<img id='photo-show' border=0 src='%s' alt='%s'><p class='photo-text'>%s</p>\n" %(medium_thumb, cur["desc"], cur["desc"]))
     print "</div>"
 
    
 print_headers()
 list_files()
 show_title()
+print "<div id='menu'>"
 show_dir_menu()
  
 if action == A_SLIDE:
@@ -199,6 +202,8 @@ if action == A_SLIDE:
     cur  = None
     next = None
     show_photo_menu()
+    # fermeture de la div id=menu
+    print "</div>"
     for idx in range(len(toflist)):
         if os.path.basename(toflist[idx]["path"]) == file:
             cur = toflist[idx]
@@ -208,7 +213,9 @@ if action == A_SLIDE:
     print_footer()
 
 elif action == A_LIST :
-    print "<div id='photo-list'>"
+    # fermeture de la div id=menu
+    print "</div>"
+    print "<div id='photo-list'><lu id='photo-list-ul'>"
     if toflist:
         cl=1
         for p in toflist:
@@ -216,9 +223,9 @@ elif action == A_LIST :
             #(current path must be writable by the user running the httpd)
             thumb_file = create_thumb(p["path"])
             # if there is not file description generate an empty one
-            print("<span class='toflist-td'><a valign=center href='?action=%s&path=%s&file=%s'><img valign=center border=0 src='%s' alt='%s'></a></span><span class='toflist-text'>%s</span>\n"%(A_SLIDE, path,urllib.quote(os.path.basename(p["path"])),thumb_file,p["desc"],p["desc"]))
+            print("<li><a valign=center href='?action=%s&path=%s&file=%s'><img valign=center border=0 src='%s' alt='%s'></a><p class='photo-text'>%s</p></li>\n"%(A_SLIDE, path,urllib.quote(os.path.basename(p["path"])),thumb_file,p["desc"],p["desc"]))
             # we have 4 photos, jumping to new row
             if cl%3==0: print('\n')
             cl+=1
-    print "</div>"
+    print "</ul></div>"
     print_footer()
