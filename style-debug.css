@@ -1,6 +1,6 @@
 body {
 	font-family : Verdana, Arial, sans-serif ;
-	font-size : 12pt;
+	font-size : 1em;
 	color: #000000;
 	background-color: #e6e6e6;
 }
@@ -14,12 +14,11 @@ body {
 #title {
          width: 80%;
          background-color: #486591;
-         font-size: 12px;
          border: 2px solid #000000;
          padding: 10;
          color: #FFFFFF;
          font-family: serif ;
-         font-size: 18pt;
+         font-size: 1.8em;
          } 
 
 #path { 
@@ -50,7 +49,7 @@ body {
             width: 220px;
             text-align: right;
             background-color: #486591;
-            font-size: 12px;
+            font-size: 1em;
             border: 1px dashed #000000;
             }
 
@@ -65,7 +64,7 @@ body {
 .toflist-text {
 	color: #000000;
 	font-family: serif ;
-	font-size: 12pt;
+	font-size: 1em;
 	text-align: left;
 }
 
