@@ -69,7 +69,9 @@ def choose_style_file():
 def print_headers():
     print "<html>\n<head>\n<title>%s</title>"%(title)
     choose_style_file()
-    print """<script type='text/javascript' src='script.js'></script>
+    print """
+    <script src='js/jquery.js' type='text/javascript'></script>
+    <script src='script.js' type='text/javascript'></script>
     </head><body>
     <div id='global'>
     """
