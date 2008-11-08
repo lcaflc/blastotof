@@ -1,7 +1,10 @@
 #!/usr/bin/python
 
 import os,sys,string,re,urllib
+import cgitb
 import Image
+
+cgitb.enable()
 
 debug       = False
 version     = "3.0"
@@ -12,8 +15,7 @@ readmefile  = "TITLE.txt"
 cachedir    = ".cache"
 
 dirlist     = []
-toflist     = []
-desc        = {}
+toflist     = {}
 
 A_LIST		= "list"
 A_SLIDE		= "slide"
@@ -70,7 +72,7 @@ def print_headers():
     print "<html>\n<head>\n<title>%s</title>"%(title)
     choose_style_file()
     print """
-    <script src='js/jquery.js' type='text/javascript'></script>
+    <script src='jquery.js' type='text/javascript'></script>
     <script src='script.js' type='text/javascript'></script>
     </head><body>
     <div id='global'>
@@ -107,11 +109,14 @@ def show_dir_menu():
 
 def show_photo_menu():
     # get and print the readme file
-    print "<div id='menu-photo'><ul id='menu-photo-li'>"
+    print "<div id='menu-photo'><ul id='menu-photo-list'>"
     count = 0
-    for i in toflist:
-        thumb = create_mini_thumb(i["path"])
-        print("<li><a href='?action=%s&path=%s&file=%s'><img border=0 src='%s' alt='%s'></a></li>"%(A_SLIDE, path, urllib.quote(os.path.basename(i["path"])), thumb, thumb))
+    for p in sortedkeysfromdict(toflist):
+        print """
+        <li><a href='%s'><img border=0 src='%s' alt='%s'></a></li>"""%\
+        (toflist[p]["med_thumb"],
+         toflist[p]["mini_thumb"],
+         toflist[p]["desc"])
         count += 1
         if count == 2:
             print ""
@@ -146,14 +151,23 @@ def list_files():
                     else:
                         desc = ""
                     tof={"path" : pathname,
-                         "desc" : desc }
+                         "desc" : desc.rstrip(),
+                         "thumb": create_thumb(pathname),
+                         "mini_thumb": create_mini_thumb(pathname),
+                         "med_thumb": create_med_thumb(pathname),
+                         
+                         }
+                    
                     if debug : print "added this photo: " + str(tof)
                     
-                    toflist.append(tof)
+                    toflist[pathname] = tof
 
     dirlist.sort()
-    toflist.sort()
 
+def sortedkeysfromdict(adict):
+    keys = adict.keys();
+    keys.sort()
+    return keys
 
 
 def create_generic_thumb(p, prefix, size):
@@ -179,18 +193,11 @@ def create_med_thumb(p):
     return create_generic_thumb(p, "med", (640, 480))
 
 def create_high_thumb(p):
-    return create_generic_thumb(p, "med", (1024, 768))
+    return create_generic_thumb(p, "high", (800, 600))
 
 def create_thumb(p):
     return create_generic_thumb(p, "tn", (200, 150))
 
-def show_photo(prev, cur, next):
-    medium_thumb = create_med_thumb(cur["path"])
-    print "<div id='photo-big'>"
-    # FIXME add full size download link only if we want to
-    # <a href='%s'></a>%cur["path"]
-    print("<img id='photo-show' border=0 src='%s' alt='%s'><p class='photo-text'>%s</p>\n" %(medium_thumb, cur["desc"], cur["desc"]))
-    print "</div>"
 
    
 print_headers()
@@ -198,21 +205,25 @@ list_files()
 show_title()
 print "<div id='menu'>"
 show_dir_menu()
- 
+
 if action == A_SLIDE:
-    prev = None
-    cur  = None
-    next = None
     show_photo_menu()
     # fermeture de la div id=menu
     print "</div>"
-    for idx in range(len(toflist)):
-        if os.path.basename(toflist[idx]["path"]) == file:
-            cur = toflist[idx]
-            if idx > 0: prev = toflist[idx-1]
-            if idx < len(toflist) -1 : next = toflist[idx+1]
-            show_photo(prev, cur, next)
-    print_footer()
+
+    # FIXME add full size download link only if we want to
+    # <a href='%s'></a>%cur["path"]
+#    print("<img id='photo-show' border=0 src='%s' alt='%s'><p class='photo-text'>%s</p>\n" %(medium_thumb, cur["desc"], cur["desc"]))
+
+# display the container and load the image we click on
+    print """
+    <div id='photo-big'>
+    </div>
+    <script type='text/javascript'>
+    showImage('%s', '%s');
+    </script>
+    """%(toflist[file]["med_thumb"],
+         toflist[file]["desc"])
 
 elif action == A_LIST :
     # fermeture de la div id=menu
@@ -220,14 +231,22 @@ elif action == A_LIST :
     print "<div id='photo-list'><lu id='photo-list-ul'>"
     if toflist:
         cl=1
-        for p in toflist:
+        for p in sortedkeysfromdict(toflist):
             # if the thumbnails doesn't exist generate it
             #(current path must be writable by the user running the httpd)
-            thumb_file = create_thumb(p["path"])
             # if there is not file description generate an empty one
-            print("<li><a valign=center href='?action=%s&path=%s&file=%s'><img valign=center border=0 src='%s' alt='%s'></a><p class='photo-text'>%s</p></li>\n"%(A_SLIDE, path,urllib.quote(os.path.basename(p["path"])),thumb_file,p["desc"],p["desc"]))
+            print """
+            <li><a valign=center href='?action=%s&path=%s&file=%s'>
+            <img valign=center border=0 src='%s' alt='%s'></a>
+            <p class='photo-text'>%s</p></li>\n"""%\
+            (A_SLIDE,
+             path,urllib.quote(p),
+             toflist[p]["thumb"],
+             toflist[p]["desc"],
+             toflist[p]["desc"])
             # we have 4 photos, jumping to new row
             if cl%3==0: print('\n')
             cl+=1
     print "</ul></div>"
-    print_footer()
+
+print_footer()

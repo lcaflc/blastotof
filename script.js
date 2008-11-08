@@ -1,25 +1,32 @@
-function displayPics()
+$(function()
 {
-	var photos = document.getElementById('menu-photo-li') ;
-	// On récupère l'élément ayant pour id galerie_mini
-	var liens = photos.getElementsByTagName('a') ;
-	// On récupère dans une variable tous les liens contenu dans galerie_mini
-	var big_photo = document.getElementById('photo-show') ;
-	// Ici c'est l'élément ayant pour id big_pict qui est récupéré, c'est notre photo en taille normale
+  $("#menu-photo-list a").click(function()
+  {
+    var imageSource = $(this).attr("href");
+    var desc = $(this).children("img").attr("alt");
+    
+    showImage(imageSource,desc);
+    return false;
+  });
+});
 
-	var titre_photo = document.getElementById('photo-big').getElementsByTagName('p')[0] ;
-	// Et enfin le titre de la photo de taille normale
-
-	// Une boucle parcourant l'ensemble des liens contenu dans galerie_mini
-	for (var i = 0 ; i < liens.length ; ++i) {
-		// Au clique sur ces liens 
-		liens[i].onclick = function() {
-			big_photo.src = this.href; // On change l'attribut src de l'image en le remplaçant par la valeur du lien
-			big_photo.alt = this.title; // On change son titre
-//			titre_photo.firstChild.nodeValue = this.title; // On change le texte de titre de la photo
-			return false; // Et pour finir on inhibe l'action réelle du lien
-		};
-	}
+function showImage(src,desc)
+{
+$("#photo-big").addClass("loading");
+$("#photo-big img").fadeOut("slow")
+  .remove();
+$("#photo-big p").fadeOut("slow")
+  .remove();
+var largeImage = new Image();
+$(largeImage).attr("src", src)
+  .attr("alt", desc)
+  .load(function()
+{
+  $(largeImage).hide();
+  $("#photo-big").removeClass("loading")
+    .append(largeImage);
+  $(largeImage).fadeIn("slow");
+  $(largeImage).after("<p class='photo-text'>"+desc+"</p>");
 }
-window.onload = displayPics;
-// Il ne reste plus qu'à appeler notre fonction au chargement de la page
+	);
+}
