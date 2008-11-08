@@ -144,7 +144,7 @@ def list_files():
                 dirlist.append(os.path.normpath(pathname))
             elif os.path.isfile(pathname):
                 # this is a file, is it a jpg file ?
-                if re.match("(.+\.(jpg|JPG|tiff|tif)$)", f) :
+                if re.match("(.+\.(jpg|JPG|tiff|tif|nef|NEF)$)", f) :
                     # maybe he got a desc file associated
                     if os.path.isfile(pathname + ".txt"):
                         desc = open(pathname + ".txt").readlines()[0]
@@ -169,6 +169,9 @@ def sortedkeysfromdict(adict):
     keys.sort()
     return keys
 
+def israwfile(file):
+    return re.match("(.+\.(nef|NEF)$)", file)
+
 
 def create_generic_thumb(p, prefix, size):
     try:
@@ -176,10 +179,22 @@ def create_generic_thumb(p, prefix, size):
     except OSError, e:
         pass
     thumb_file = "%s/%s/%s_%s.jpg" % (cachedir, os.path.basename(path), os.path.basename(p[:-4]), prefix)
-    if not os.path.isfile(thumb_file) or os.path.getmtime(p) >= os.path.getmtime(thumb_file):
+    if not os.path.isfile(thumb_file) \
+           or os.path.getmtime(p) >= os.path.getmtime(thumb_file):
         try:
             if debug: print p, thumb_file
-            im=Image.open(p)
+            if israwfile(p):
+                # we extrac the embeded jpeg
+                # then we get exif tags from it. usefull for exiftran later
+                embed = "%s/%s/%s_%s.jpg" % (cachedir, os.path.basename(path), os.path.basename(p[:-4]), "embed")
+                os.popen("dcraw -e -c \"%s\" > \"%s\""%(p, embed))
+                os.popen("exiftool -TagsFromFile \"%s\" \"%s\""%(p, embed))
+                p=embed
+
+            # rotate the image with exif tags
+            tmpfile="%s/exiftrantmp.jpg"%cachedir
+            os.popen("exiftran -a \"%s\" -o \"%s\""%(p,tmpfile))
+            im=Image.open(tmpfile)
             im.thumbnail(size, Image.ANTIALIAS)
             im.save(thumb_file, "JPEG")
         except IOError, err:

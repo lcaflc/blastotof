@@ -1,6 +1,13 @@
               Blastotof v1.0
               --------------
 
+Requires:
+ - python
+ - python Imagining Library
+ - dcraw (for raw files support)
+ - exiv2 (for raw files support)
+ - exiftran
+
 Blastotof is a simple jpg photos repository presentation and browser tool. It create thumbnails himself, support a description for each photo, detailled title and different css styles per directory.
 
 This is a python script that only need the standard python distribution. It require imagemagick if you want to convert thumbnails on the fly (done only the first time you view a directory). It must be used as a cgi script with the apache webserver for exemple. I personally use apache + mod_python in cgi handler mode, it speed up a lot the python scripts.
