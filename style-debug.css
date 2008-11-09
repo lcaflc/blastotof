@@ -14,9 +14,10 @@ a:hover {
 }
 
 #global { 
-          position: relative;
-          width: 95%;
-          height: 95%;
+          position: absolute;
+          width: 98%;
+          height: 98%;
+          border: 1px solid black;
 }
 
 #title,
@@ -29,8 +30,7 @@ a:hover {
  }
 
 #title {
-         width: 80%;
-         right: 0;
+         width: 100%;
          padding: 10px;
          margin: 10px;
          color: #FFFFFF;
@@ -61,14 +61,6 @@ a:hover {
                }
 
 
-#path { 
-        width: 400px;
-        border: 1px dashed #000000;
-        float: right;
-        text-align: right;
-}
-
-
 .loading
 {
     background: url('loadingIcon.gif') no-repeat 50% 50%;
@@ -96,8 +88,8 @@ a:hover {
                  list-style-type: none;
 }
 #photo-list-ul li { 
-                    width: 210px;
-                    height: 210px;
+                    width: 205px;
+                    height: 205px;
                     float: left;
                     margin: 2px;
                     padding: 2px;
@@ -118,3 +110,10 @@ a:hover {
           margin: 10px;
           clear: both;
           }
+
+#slideshow { 
+             width: 95%;
+             height: 80%;
+             border: 1px dashed #000000;
+             text-align: center;
+             }

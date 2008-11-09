@@ -13,12 +13,14 @@ title       = "Blastotof"
 stylefile   = "style.css"
 readmefile  = "TITLE.txt"
 cachedir    = ".cache"
+slideshowspeed = 2000
 
 dirlist     = []
 toflist     = {}
 
 A_LIST		= "list"
 A_SLIDE		= "slide"
+A_SLIDESHOW	= "slideshow"
 A_CLEANUP       = "cleanup"
 
 
@@ -86,12 +88,6 @@ def show_title():
         <div id='title'>
         %s
         </div>"""%open(os.path.join(path, readmefile)).read()
-    print "<div id='path'>"
-    print path
-    # FIXME link only if file exist
-#    print "<a href=?download=%s>(download)</a>" % path
-    print "</div>"
-
 
 def show_dir_menu():
     # print the menu
@@ -100,9 +96,16 @@ def show_dir_menu():
     <ul class='menu-li'>
     <li><a href='?'>top</a></li>
     <li><a href='?path=%s'>back</a></li>
-    """%(urllib.quote(os.path.split(path)[0]))
+    <li>&nbsp;</li>
+    <li>%s</li>
+    """%(urllib.quote(os.path.split(path)[0]), path)
+    
+    if len(toflist):
+        print "<li><a href=?path=%s&action=slideshow>slideshow</a></li>" % urllib.quote(path)
+    if action == A_SLIDE:
+        print "<li><a href=?path=%s>thumbnail list</a></li>"%urllib.quote(path)
     if len(dirlist):
-        print "<li></li>"
+        print "<li>&nbsp;</li>"
     for i in dirlist:
         print("<li><a href='?path=%s'>%s</a></li>")%(urllib.quote(i),os.path.basename(i))
     print "</ul></div>"
@@ -155,7 +158,7 @@ def list_files():
                          "thumb": create_thumb(pathname),
                          "mini_thumb": create_mini_thumb(pathname),
                          "med_thumb": create_med_thumb(pathname),
-                         
+                         "high_thumb": create_high_thumb(pathname)
                          }
                     
                     if debug : print "added this photo: " + str(tof)
@@ -218,17 +221,15 @@ def create_thumb(p):
 print_headers()
 list_files()
 show_title()
-print "<div id='menu'>"
-show_dir_menu()
 
-if action == A_SLIDE:
+if action != A_SLIDESHOW :
+    print "<div id='menu'>"
+    show_dir_menu()
+
+if action == A_SLIDE :
     show_photo_menu()
     # fermeture de la div id=menu
     print "</div>"
-
-    # FIXME add full size download link only if we want to
-    # <a href='%s'></a>%cur["path"]
-#    print("<img id='photo-show' border=0 src='%s' alt='%s'><p class='photo-text'>%s</p>\n" %(medium_thumb, cur["desc"], cur["desc"]))
 
 # display the container and load the image we click on
     print """
@@ -259,9 +260,22 @@ elif action == A_LIST :
              toflist[p]["thumb"],
              toflist[p]["desc"],
              toflist[p]["desc"])
-            # we have 4 photos, jumping to new row
-            if cl%3==0: print('\n')
-            cl+=1
     print "</ul></div>"
+
+elif action == A_SLIDESHOW :
+    photos = []
+    # we generate the array of photos
+    for p in sortedkeysfromdict(toflist):
+        photos += [toflist[p]["high_thumb"]]
+    print """
+    <div id='slideshow'>
+    </div>
+    <p><a href=?path=%s>back to photo list</a></p>
+    <script type='text/javascript'>
+    var speed = %s;
+    var photos = %s;
+    slideshow(0);
+    </script>
+    """%(urllib.quote(path),slideshowspeed, str(photos))
 
 print_footer()

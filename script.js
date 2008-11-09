@@ -30,3 +30,28 @@ $(largeImage).attr("src", src)
 }
 	);
 }
+
+function slideshow(startidx)
+{
+var photo = photos[startidx];
+  $("#slideshow img").remove();
+  var largeImage = new Image();
+  $(largeImage).attr("src", photo)
+    .load(function()
+    {
+      $(largeImage).hide();
+      $("#slideshow").append(largeImage);
+      $(largeImage).fadeIn("slow");
+    }
+);
+
+if (startidx == photos.length - 1)
+{
+     startidx = 0;
+}
+ else 
+   {
+     startidx = startidx + 1;
+   }
+setTimeout("slideshow("+startidx+")", speed);
+}
