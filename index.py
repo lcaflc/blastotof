@@ -265,7 +265,7 @@ elif action == A_SLIDESHOW :
     print """
     <div id='slideshow'>
     </div>
-    <p><a href=?path=%s>back to photo list</a></p>
+    <div id='menu-dir'><a href=?path=%s>back to photo list</a></div>
     <script type='text/javascript'>
     var speed = %s;
     var photos = %s;

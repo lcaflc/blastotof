@@ -1,16 +1,17 @@
 body {
-	font-family : Verdana, Arial, sans-serif ;
+	font-family : serif ;
 	font-size : 1em;
-	color: #000000;
-	background-color: #e6e6e6;
+	color: #333;
+	background-color: #fff;
 }
 
 a {
 	text-decoration: none;
-	color:#FFFFFF;
+	color:#ab5b1e;
 }
 a:hover {
-	color: #000000;
+	color: #ad5b1e;
+	border-bottom: 1px solid #ad5b1e;
 }
 
 p,
@@ -21,29 +22,32 @@ img {
 
 #global { 
           position: absolute;
-          width: 98%;
-          height: 98%;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
 }
 
-#title,
 #menu-dir,
 #menu-photo,
 #footer { 
-          background-color: #486591;
+          background-color: #fff;
           border: 1px solid #000000;
-          margin: 5px;
  }
 
 #title {
-         width: 100%;
+         background:url(../wp-content/themes/mariage/images/head1.jpg);
+         background-repeat: no-repeat;
+         height: 170px;
+         width: 990px;
+         padding: 10;
          color: #FFFFFF;
-         font-size: 1.8em;
+         font-size: 2em;
 } 
 
 
 #menu { 
         width: 15%;
-        height: 80%;
         float: left;
         overflow: auto;
             }
@@ -72,7 +76,6 @@ img {
 #photo-big,
 #photo-list { 
               width: 80%;
-              height: 79%;
               float: right;
               margin: 5px;
               overflow: auto;
@@ -105,7 +108,7 @@ img {
              }
 
 #footer { 
-          width: 100%;
+          width: 98%;
           clear: both;
           text-align: right;
           }

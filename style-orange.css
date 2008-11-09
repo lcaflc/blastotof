@@ -1,53 +1,113 @@
 body {
 	font-family : Verdana, Arial, sans-serif ;
-	font-size : 12pt;
-	color: #FFFFFF;
+	font-size : 1em;
+	color: #ffffff;
 	background-color: #fffae8;
 }
-table {
-	border: 0px;
-}
 
-
-.menu-a {
+a {
 	text-decoration: none;
 	color:#000000;
 }
-.menu-a:hover {
+a:hover {
 	color: #ffffff;
 }
-.menu-td {
-        background-color: #ffa854;
-	font-size: 12px;
-	border: 1px dashed #000000;
-} 
 
+p,
+img { 
+             margin-left: auto;
+             margin-right: auto;
+         }
 
-.title-text {
-	color: #000000;
-	font-family: serif ;
-	font-size: 18pt;
+#global { 
+          position: absolute;
+          width: 98%;
+          height: 98%;
 }
-.title-td {
-        background-color: #ffa854;
-	font-size: 12px;
-	border: 2px solid #000000;
-	padding: 10;
+
+#title,
+#menu-dir,
+#menu-photo,
+#footer { 
+          background-color: #ffa854;
+          border: 1px solid #000000;
+          margin: 5px;
+ }
+
+#title {
+         width: 100%;
+         color: #000000;
+         font-size: 1.8em;
 } 
 
 
-.toflist-td {
-	vertical-align: top;
-        background-color: #ffeacb;
-	font-size: 12px;
-	border: 1px solid #000000;
-	padding: 2;
-	margin: 0;
+#menu { 
+        width: 15%;
+        height: 80%;
+        float: left;
+        overflow: auto;
+            }
+
+#menu-dir { 
+            text-align: left;
+}
+#menu-photo {
+              text-align: center;
+              vertical-align: middle;
 } 
-.toflist-text {
+#menu-photo-list,
+#menu-dir-list { 
+                 list-style-type: none;
+                 padding: 5px;
+                 }
+
+
+.loading
+{
+    background: url('loadingIcon.gif') no-repeat 50% 50%;
+    height: 100%;
+    width: 100%;
+}
+
+#photo-big,
+#photo-list { 
+              width: 80%;
+              height: 79%;
+              float: right;
+              margin: 5px;
+              overflow: auto;
+              }
+
+#photo-list-ul { 
+                 position: relative;
+                 margin: 10px;
+                 list-style-type: none;
+}
+#photo-list-ul li { 
+                    width: 205px;
+                    height: 205px;
+                    float: left;
+                    margin: 2px;
+                    padding: 2px;
+                    background-color: #ffeacb;
+                    border: 1px solid #000000;
+                    text-align: center;
+ }
+.photo-text {
 	color: #000000;
 	font-family: serif ;
-	font-size: 12pt;
+	font-size: 1em;
 	text-align: left;
 }
+
+#slideshow { 
+             width: 95%;
+             height: 80%;
+             }
+
+#footer { 
+          width: 100%;
+          clear: both;
+          text-align: right;
+          }
 
