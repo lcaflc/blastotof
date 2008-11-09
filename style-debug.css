@@ -13,52 +13,54 @@ a:hover {
 	color: #000000;
 }
 
+p,
+img { 
+             margin-left: auto;
+             margin-right: auto;
+         }
+
 #global { 
           position: absolute;
           width: 98%;
           height: 98%;
-          border: 1px solid black;
 }
 
 #title,
 #menu-dir,
 #menu-photo,
 #footer { 
-         background-color: #486591;
-         border: 2px solid #000000;
+          background-color: #486591;
+          border: 1px solid #000000;
           margin: 5px;
  }
 
 #title {
-         width: 100%;
+         width: 95%;
          padding: 10px;
-         margin: 10px;
          color: #FFFFFF;
          font-size: 1.8em;
 } 
 
 
 #menu { 
-        width: 19%;
+        width: 15%;
         height: 80%;
         float: left;
         overflow: auto;
             }
 
 #menu-dir { 
-            text-align: right;
+            text-align: left;
 }
 #menu-photo {
               text-align: center;
-              vertical-align: top;
+              vertical-align: middle;
 } 
-#menu-photo-list { 
-               list-style-type: none;
-               }
-
-.menu-li { 
-               list-style-type: none;
-               }
+#menu-photo-list,
+#menu-dir-list { 
+                 list-style-type: none;
+                 padding: 5px;
+                 }
 
 
 .loading
@@ -71,16 +73,12 @@ a:hover {
 #photo-big,
 #photo-list { 
               width: 80%;
-              height: 75%;
+              height: 79%;
               float: right;
+              margin: 5px;
               border: 1px dashed #000000;
-              text-align: center;
               overflow: auto;
               }
-
-#photo-big { 
-
-         }
 
 #photo-list-ul { 
                  position: relative;
@@ -103,17 +101,16 @@ a:hover {
 	text-align: left;
 }
 
-
-#footer { 
-          width: 100%;
-          padding: 10px;
-          margin: 10px;
-          clear: both;
-          }
-
 #slideshow { 
              width: 95%;
              height: 80%;
              border: 1px dashed #000000;
-             text-align: center;
              }
+
+#footer { 
+          width: 95%;
+          padding: 5px;
+          clear: both;
+          text-align: right;
+          }
+

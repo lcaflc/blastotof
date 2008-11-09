@@ -13,7 +13,7 @@ title       = "Blastotof"
 stylefile   = "style.css"
 readmefile  = "TITLE.txt"
 cachedir    = ".cache"
-slideshowspeed = 2000
+slideshowspeed = 10000
 
 dirlist     = []
 toflist     = {}
@@ -93,7 +93,7 @@ def show_dir_menu():
     # print the menu
     print """
     <div id='menu-dir'>
-    <ul class='menu-li'>
+    <ul id='menu-dir-list'>
     <li><a href='?'>top</a></li>
     <li><a href='?path=%s'>back</a></li>
     <li>&nbsp;</li>
@@ -113,18 +113,13 @@ def show_dir_menu():
 def show_photo_menu():
     # get and print the readme file
     print "<div id='menu-photo'><ul id='menu-photo-list'>"
-    count = 0
     for p in sortedkeysfromdict(toflist):
         print """
         <li><a href='%s'><img border=0 src='%s' alt='%s'></a></li>"""%\
         (toflist[p]["med_thumb"],
          toflist[p]["mini_thumb"],
          toflist[p]["desc"])
-        count += 1
-        if count == 2:
-            print ""
-            count = 0
-    print "</div>"
+    print "</ul></div>"
 
 def print_footer():
     print """
