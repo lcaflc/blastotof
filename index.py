@@ -116,7 +116,7 @@ def show_photo_menu():
     for p in sortedkeysfromdict(toflist):
         print """
         <li><a href='%s'><img border=0 src='%s' alt='%s'></a></li>"""%\
-        (toflist[p]["med_thumb"],
+        (toflist[p]["high_thumb"],
          toflist[p]["mini_thumb"],
          toflist[p]["desc"])
     print "</ul></div>"
@@ -150,11 +150,8 @@ def list_files():
                         desc = ""
                     tof={"path" : pathname,
                          "desc" : desc.rstrip(),
-                         "thumb": create_thumb(pathname),
-                         "mini_thumb": create_mini_thumb(pathname),
-                         "med_thumb": create_med_thumb(pathname),
-                         "high_thumb": create_high_thumb(pathname)
                          }
+                    tof.update(create_thumbs(pathname))
                     
                     if debug : print "added this photo: " + str(tof)
                     
@@ -171,48 +168,51 @@ def israwfile(file):
     return re.match("(.+\.(nef|NEF)$)", file)
 
 
-def create_generic_thumb(p, prefix, size):
+def create_thumbs(p):
     try:
         os.mkdir('%s/%s' % (cachedir,os.path.basename(path)))
     except OSError, e:
         pass
-    thumb_file = "%s/%s/%s_%s.jpg" % (cachedir, os.path.basename(path), os.path.basename(p[:-4]), prefix)
-    if not os.path.isfile(thumb_file) \
-           or os.path.getmtime(p) >= os.path.getmtime(thumb_file):
+
+    thumbs = [("mini_thumb", (100, 75)), ("high_thumb", (800, 600)), ("thumb", (200, 150))]
+    thumbs_file = {}
+    
+    regen = False
+    for tup in thumbs:
+        thumbs_file[tup[0]] = "%s/%s/%s_%s.jpg" % (cachedir, os.path.basename(path), os.path.basename(p[:-4]), tup[0])
+        if not os.path.isfile(thumbs_file[tup[0]]) \
+               or os.path.getmtime(p) >= os.path.getmtime(thumbs_file[tup[0]]):
+            regen = True
+
+    if regen :
         try:
-            if debug: print p, thumb_file
+            if debug: print p, thumbs
             if israwfile(p):
                 # we extrac the embeded jpeg
                 # then we get exif tags from it. usefull for exiftran later
                 embed = "%s/%s/%s_%s.jpg" % (cachedir, os.path.basename(path), os.path.basename(p[:-4]), "embed")
                 os.popen("dcraw -e -c \"%s\" > \"%s\""%(p, embed))
-                os.popen("exiftool -TagsFromFile \"%s\" \"%s\""%(p, embed))
-                p=embed
+                os.popen("exiftool -m -q -q -overwrite_original -TagsFromFile \"%s\" \"%s\""%(p, embed))
+                p = embed
+            else :
+                embed = ""
 
             # rotate the image with exif tags
             tmpfile="%s/exiftrantmp.jpg"%cachedir
             os.popen("exiftran -a \"%s\" -o \"%s\""%(p,tmpfile))
-            im=Image.open(tmpfile)
-            im.thumbnail(size, Image.ANTIALIAS)
-            im.save(thumb_file, "JPEG")
+
+            if embed :
+                os.unlink(embed)
+	    # resize the image for each res
+            for tup in thumbs:
+	    	im=Image.open(tmpfile)
+            	im.thumbnail(tup[1], Image.ANTIALIAS)
+            	im.save(thumbs_file[tup[0]], "JPEG")
         except IOError, err:
             print "Cannot create thumbnails ", p, err
-    return thumb_file
+    return thumbs_file
 
-def create_mini_thumb(p):
-    return create_generic_thumb(p, "mini", (100, 75))
-
-def create_med_thumb(p):
-    return create_generic_thumb(p, "med", (640, 480))
-
-def create_high_thumb(p):
-    return create_generic_thumb(p, "high", (800, 600))
-
-def create_thumb(p):
-    return create_generic_thumb(p, "tn", (200, 150))
-
-
-   
+ 
 print_headers()
 list_files()
 show_title()
@@ -233,7 +233,7 @@ if action == A_SLIDE :
     <script type='text/javascript'>
     showImage('%s', '%s');
     </script>
-    """%(toflist[file]["med_thumb"],
+    """%(toflist[file]["high_thumb"],
          toflist[file]["desc"])
 
 elif action == A_LIST :
