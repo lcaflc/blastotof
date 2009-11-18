@@ -27,7 +27,7 @@ A_CLEANUP       = "cleanup"
 # parse query string and return a dict
 def readquerystring():
     qe={}
-    if os.environ["QUERY_STRING"]:
+    if "QUERY_STRING" in os.environ and os.environ["QUERY_STRING"]:
         qs=os.environ["QUERY_STRING"].split('&')
         for i in qs:
             if i.split('=')[1] :
